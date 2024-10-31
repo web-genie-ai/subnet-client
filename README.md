@@ -1,9 +1,9 @@
-# BTCopilot Subnet Interface
+# WebGenieAI Subnet Interface
 
-This is a interface for BTCopilot Subnet.
+This is a interface for WebGenieAI Subnet.
 
 ## Installation
-Follow these steps to install the BTCopilot Subnet Interface:
+Follow these steps to install the WebGenieAI Subnet Interface:
 
 1. Clone the repository:
 
