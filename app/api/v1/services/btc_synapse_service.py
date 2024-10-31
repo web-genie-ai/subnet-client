@@ -51,7 +51,7 @@ class BTCSynapseService:
 
         test_axon = self.bt_meta.axons[2]
         test_axon_miner = self.bt_meta.axons[1]
-        wallet = bt.wallet(name="validator", hotkey="validator_hk")
+        wallet = bt.wallet(name="s-owner", hotkey="s-owner-hval1")
         dendrite = bt.dendrite(wallet=wallet)
         response = await dendrite(
           axons=[test_axon],

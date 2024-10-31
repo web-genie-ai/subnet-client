@@ -39,3 +39,13 @@ pip install -r requirements.txt
 ```bash
 python main.py
 ```
+
+## Usage
+
+```bash
+curl --location 'http://209.145.56.217:8000/api/v1/generate' \
+--header 'Content-Type: application/json' \
+--data '{
+    "prompt": "Build hello world page"
+}'
+```
