@@ -37,7 +37,7 @@ class BTCSynapseService:
       results = await asyncio.gather(*tasks, return_exceptions=True)
       return [result for result in results if result is not None]
     
-    async def generate(self):
+    async def generate(self, prompt: str):
         
         vali_ip_list = []
         vali_list = []
@@ -56,7 +56,7 @@ class BTCSynapseService:
         response = await dendrite(
           axons=[test_axon],
           synapse = BtCopilotSynapse(
-            task=Task(query="Generate a signup page for a website"),
+            task=Task(query=prompt),
           ),
           timeout=50,
           deserialize=True,
