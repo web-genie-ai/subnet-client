@@ -8,8 +8,8 @@ Follow these steps to install the WebGenieAI Subnet Interface:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/btcopilot/btcopilot-subnet-interface.git
-cd btcopilot-subnet-interface
+git clone https://github.com/web-genie-ai/subnet-client.git
+cd subnet-client
 ```
 
 2. Create a virtual environment:
