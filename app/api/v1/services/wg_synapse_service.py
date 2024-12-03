@@ -1,10 +1,9 @@
-from typing import Awaitable
 import bittensor as bt
-import asyncio
-
-from app.core.btcsynapse import BtCopilotSynapse
+from typing import Awaitable
+from app.core.wgsynapse import WGSynapse
 from app.core.task import Task
-class BTCSynapseService:
+
+class WGSynapseService:
     def __init__(self):
         self.bt_meta = bt.metagraph(netuid=214, network="test")
 
@@ -18,7 +17,7 @@ class BTCSynapseService:
                   print("===buffer===>", buffer)
           if chunk is not None:
               synapse = chunk
-              if isinstance(synapse, BtCopilotSynapse):
+              if isinstance(synapse, WGSynapse):
                   if synapse.dendrite.status_code == 200:
                       synapse.solution.miner_uid = uid
                       return synapse.solution
@@ -31,14 +30,8 @@ class BTCSynapseService:
       except Exception as e:
           bt.logging.error(f"Error processing response for uid: {uid}: {e}")
           return None
-        
-    async def handle_response(self, miner_uids_list, responses):
-      tasks = [self.process_response(uid, response) for uid, response in zip(miner_uids_list, responses)]
-      results = await asyncio.gather(*tasks, return_exceptions=True)
-      return [result for result in results if result is not None]
     
-    async def generate(self, prompt: str):
-        
+    async def generate(self, prompt: str, img_data: str):
         vali_ip_list = []
         vali_list = []
         for i in range(len(self.bt_meta.S)):
@@ -50,23 +43,21 @@ class BTCSynapseService:
         print("=== vali_ip_list ===>", vali_ip_list)
 
         test_axon = self.bt_meta.axons[2]
-        test_axon_miner = self.bt_meta.axons[1]
+        # test_axon_miner = self.bt_meta.axons[1]
         wallet = bt.wallet(name="s-owner", hotkey="s-owner-hval1")
         dendrite = bt.dendrite(wallet=wallet)
         response = await dendrite(
           axons=[test_axon],
-          synapse = BtCopilotSynapse(
-            task=Task(query=prompt),
+          synapse = WGSynapse(
+            task=Task(query=prompt, img_data=img_data),
           ),
           timeout=50,
-          deserialize=True,
-          streaming=True,
+          deserialize=False,
+          streaming=False,
         )
         
-        handle_responses_task = asyncio.create_task(self.handle_response([2], response))
-        results = await handle_responses_task
-        if len(results) == 0:
+        if len(response) == 0:
           bt.logging.info("No responses received")
           return None
         else:
-          return results[0]
+          return response[0].solution

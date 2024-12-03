@@ -16,7 +16,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the BTCopilot Subnet Interface"}
+    return {"message": "Welcome to the WebGenieAI Subnet Interface"}
 
 app.include_router(router=subnet_router, prefix="/api/v1")
 
