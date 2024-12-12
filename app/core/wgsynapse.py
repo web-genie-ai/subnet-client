@@ -1,27 +1,37 @@
 import pydantic
 from typing import Union, Any
 import bittensor as bt
-from app.core.task import Task
 from app.core.solution import Solution
 
-class WGSynapse(bt.Synapse):
+class WebgenieTextSynapse(bt.Synapse):
     """
-    A protocol for the WebGenieAI.
+    A protocol for the webgenie text task.
     """
-    task: Union[Task, None] = pydantic.Field(
-        None,
-        title="Task",
-        description="A task to be sent to miners."
+    prompt: str = pydantic.Field(
+        "",
+        title="Prompt",
+        description="The prompt to be sent to miners."
     )
+
     solution: Union[Solution, None] = pydantic.Field(
         None,
         title="Solution",
         description="A solution received from miners."
     )
-    completion: str = pydantic.Field(
+
+class WebgenieImageSynapse(bt.Synapse):
+    """
+    A protocol for the webgenie image task.
+    """
+    base64_image: str = pydantic.Field(
         "",
-        title="Completion",
-        description="The completion response from miners."
+        title="Base64 Image",
+        description="The base64 image to be sent to miners."
     )
-    def deserialize(self) -> Union[Any, None]:
-        return self
+
+    solution: Union[Solution, None] = pydantic.Field(
+        None,
+        title="Solution",
+        description="A solution received from miners."
+    )
+
