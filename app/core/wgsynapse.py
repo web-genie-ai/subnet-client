@@ -12,11 +12,10 @@ class WebgenieTextSynapse(bt.Synapse):
         title="Prompt",
         description="The prompt to be sent to miners."
     )
-
-    solution: Union[Solution, None] = pydantic.Field(
-        None,
-        title="Solution",
-        description="A solution received from miners."
+    html: str = pydantic.Field(
+        "",
+        title="HTML",
+        description="The HTML received from miners."
     )
 
 class WebgenieImageSynapse(bt.Synapse):
@@ -28,10 +27,8 @@ class WebgenieImageSynapse(bt.Synapse):
         title="Base64 Image",
         description="The base64 image to be sent to miners."
     )
-
-    solution: Union[Solution, None] = pydantic.Field(
-        None,
-        title="Solution",
-        description="A solution received from miners."
+    html: str = pydantic.Field(
+        "",
+        title="HTML",
+        description="The HTML received from miners."
     )
-

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, HTTPException
 from pydantic import BaseModel
 from typing import Optional
 
@@ -14,4 +14,6 @@ class PromptRequest(BaseModel):
 @router.post("/generate")
 async def generate(request: PromptRequest = Body(...)):
     solution = await synapse_service.generate(request.prompt, request.img_data)
+    if solution is None:
+      raise HTTPException(status_code=400, detail="Invalid solution")
     return {"solution": solution}

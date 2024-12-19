@@ -1,6 +1,8 @@
 import bittensor as bt
 from typing import Awaitable
 from app.core.wgsynapse import WebgenieTextSynapse, WebgenieImageSynapse
+from app.core.solution import Solution
+from app.api.v1.utils.htmls import seperate_html_css, is_valid_html
 
 class WGSynapseService:
     def __init__(self):
@@ -19,7 +21,7 @@ class WGSynapseService:
 
         test_axon = self.bt_meta.axons[2]
         # test_axon_miner = self.bt_meta.axons[1]
-        wallet = bt.wallet(name="s-owner", hotkey="s-owner-hval1")
+        wallet = bt.wallet(name="s-owner", hotkey="s-backend")
         dendrite = bt.dendrite(wallet=wallet)
         if prompt is not None and prompt != "":
           response = await dendrite(
@@ -35,13 +37,22 @@ class WGSynapseService:
             synapse = WebgenieImageSynapse(
               base64_image=img_data,
             ),
-            timeout=50,
+            timeout=300,
           )
         else:
-          raise ValueError("No prompt or image data provided")
+          return None
         
         if len(response) == 0:
           bt.logging.info("No responses received")
           return None
         else:
-          return response[0].solution
+          synapse = response[0]
+          if synapse.dendrite.status_code == 200:
+            html = synapse.html
+            if is_valid_html(html):
+              cleaned_html, css = seperate_html_css(html)
+              return Solution(html=cleaned_html, css=css)
+            else:
+              return None
+          else:
+            return None
